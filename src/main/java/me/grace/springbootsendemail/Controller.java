@@ -20,21 +20,69 @@ public class Controller {
     @Autowired
     public EmailService emailService;
 
-    public void sendEmailWithTemplating(String recipient) throws UnsupportedEncodingException, CannotSendEmailException {
-        final Email email = DefaultEmail.builder()
-                .from(new InternetAddress("grace.luning.fu@gmail.com", "Grace"))
-                .to(Lists.newArrayList(new InternetAddress("luningfu1010@gmail.com", "Luning")))
-                .subject("Email from Spring")
-                .body("Firmamentum")
-                .encoding("UTF-8").build();
-        final Map<String, Object> modelObject = new HashMap<>();
-        modelObject.put("recipient", recipient);
-        emailService.send(email, "emailtemp", modelObject);
+    public void sendEmailWithTemplating(String recipient) {
+        final Email email;
+        try {
+            email = DefaultEmail.builder()
+                    .from(new InternetAddress("lll", "999"))
+                    .to(Lists.newArrayList(new InternetAddress("luningfu1010@gmail.com", "Luning")))
+                    .subject("Email from Spring")
+                    .body("Sending email from Gmail")
+                    .encoding("UTF-8").build();
+            final Map<String, Object> modelObject = new HashMap<>();
+            modelObject.put("recipient", recipient);
+            try {
+                emailService.send(email, "emailtemp", modelObject);
+            } catch (CannotSendEmailException e) {
+                e.printStackTrace();
+                System.out.println("!!!!!!!!!!!");
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            System.out.println("?????????????");
+        }
+
     }
+
+
+    public void sendEmailWithoutTemplating(String recipient) {
+        final Email email;
+        try {
+            email = DefaultEmail.builder()
+                    .from(new InternetAddress("doesnotmatter", "Grace"))
+                    .to(Lists.newArrayList(new InternetAddress("luningfu1010@gmail.com", "Luning")))
+                    .subject("Email from Spring")
+                    .body("Firmamentum")
+                    .encoding("UTF-8").build();
+            final Map<String, Object> modelObject = new HashMap<>();
+            modelObject.put("recipient", recipient);
+            emailService.send(email);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @GetMapping("/")
     public @ResponseBody String sendEmail(){
-        return "email sent!";
+
+        String rect = "luningfu1010@gmail.com" ;
+        sendEmailWithoutTemplating(rect);
+        return "email with out templating sent!";
     }
+
+
+    //this is not working
+    @GetMapping("/temp")
+    public @ResponseBody String sendEmailt(){
+
+        String rect = "luningfu1010@gmail.com" ;
+        sendEmailWithTemplating(rect);
+        return "email with templating sent!";
+    }
+
+
+
 
 }
