@@ -74,7 +74,7 @@ public class Controller {
 
 
     //this is not working
-    @GetMapping("/temp")
+    @GetMapping("/templ")
     public @ResponseBody String sendEmailt(){
 
         String rect = "luningfu1010@gmail.com" ;
